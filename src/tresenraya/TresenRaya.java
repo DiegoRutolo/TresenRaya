@@ -3,26 +3,32 @@ package tresenraya;
 import java.util.Random;
 
 /**
- * @author rutolo
+ * @author a16diegoar
  */
 public class TresenRaya {
-    private char[][] tablero = {{'·', '·', '·'}, {'·', '·', '·'}, {'·', '·', '·'}};
+    private char[][] tablero = new char[3][3];
     private int dif;
     private char cv;       // caracter que indica espacio vacio
     private char jug = 'X';       // caracter del jugador
     private char cpu = 'O';       // caracter de la maquina
     
     public TresenRaya() {
-        this(0, '·');
+        this(0, ' ');
     }
     
     public TresenRaya(int dif) {
-        this(dif, '·');
+        this(dif, ' ');
     }
     
     public TresenRaya(int dif, char cv) {
         this.dif = dif;
         this.cv = cv;
+        // inicializar valores del tablero
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                tablero[x][y] = cv;
+            }
+        }
     }
     
     public char getPos(int x, int y) {
@@ -45,6 +51,9 @@ public class TresenRaya {
         this.cpu = cpu;
     }
     
+    /*
+     *  Innecesario
+    */
     public void imprimeTablero() {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
@@ -62,11 +71,10 @@ public class TresenRaya {
         
         if (tablero[x][y] == cv) {
             tablero[x][y] = jug;
-        }
-        
-        if (this.hayEspacio() > 0) {
-            this.maquina();
-        }
+            if (this.hayEspacio() > 0) {
+                this.maquina();
+            }
+        }        
     }
 
     public void maquina() {
@@ -80,18 +88,22 @@ public class TresenRaya {
             } while (this.tablero[x][y] != cv);
             this.tablero[x][y] = cpu;
         }
+        // dificultad 1 -> busca tres en raya
+        if (this.dif == 1) {
+            
+        }
     }
     
     public int hayEspacio() {
-        int hay = 0;
+        int nEspacios = 0;
         for (char[] i : this.tablero) {
             for (char j : i) {
                 if (j == cv) {
-                    hay++;
+                    nEspacios++;
                 }
             }
         }
-        return hay;
+        return nEspacios;
     }
     
     public boolean linea(char c) {

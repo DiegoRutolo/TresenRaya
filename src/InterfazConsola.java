@@ -3,9 +3,19 @@ import java.util.Scanner;
 import tresenraya.TresenRaya;
 
 /**
- * @author rutolo
+ * @author a16diegoar
  */
 public class InterfazConsola {
+    public static void dibujaTablero(TresenRaya tr) {
+        System.out.println("\n┌─┬─┬─┐");
+        System.out.println("│" + tr.getPos(0, 0) + "│" + tr.getPos(1, 0) + "│" + tr.getPos(2, 0) + "│");
+        System.out.println("├─┼─┼─┤");
+        System.out.println("│" + tr.getPos(0, 1) + "│" + tr.getPos(1, 1) + "│" + tr.getPos(2, 1) + "│");
+        System.out.println("├─┼─┼─┤");
+        System.out.println("│" + tr.getPos(0, 2) + "│" + tr.getPos(1, 2) + "│" + tr.getPos(2, 2) + "│");
+        System.out.println("└─┴─┴─┘");
+    }
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Numero de partidas -> ");
@@ -17,10 +27,13 @@ public class InterfazConsola {
         int pMaq = 0;
         for (; nPart > 0; nPart--) {
             TresenRaya tr = new TresenRaya(dif);
-            tr.imprimeTablero();
+            dibujaTablero(tr);
             while (tr.hayEspacio() > 0) {
+                //  el jugador mueve
+                //      la máquina va automáticamente despues
                 tr.jugador(sc.nextInt(), sc.nextInt());
-                tr.imprimeTablero();
+                System.out.print("\n");
+                dibujaTablero(tr);
                 if (tr.linea(tr.getJug())) {
                     System.out.println("Punto para el Jugador");
                     pJug++;
