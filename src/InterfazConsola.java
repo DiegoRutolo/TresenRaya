@@ -18,7 +18,7 @@ public class InterfazConsola {
         for (; nPart > 0; nPart--) {
             TresenRaya tr = new TresenRaya(dif);
             tr.imprimeTablero();
-            while (tr.hayEspacio()) {
+            while (tr.hayEspacio() > 0) {
                 tr.jugador(sc.nextInt(), sc.nextInt());
                 tr.imprimeTablero();
                 if (tr.linea(tr.getJug())) {

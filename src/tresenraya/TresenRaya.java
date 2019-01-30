@@ -32,9 +32,17 @@ public class TresenRaya {
     public char getJug() {
         return this.jug;
     }
-    
+
+    public void setJug(char jug) {
+        this.jug = jug;
+    }
+
     public char getCpu() {
         return this.cpu;
+    }
+
+    public void setCpu(char cpu) {
+        this.cpu = cpu;
     }
     
     public void imprimeTablero() {
@@ -56,7 +64,7 @@ public class TresenRaya {
             tablero[x][y] = jug;
         }
         
-        if (this.hayEspacio()) {
+        if (this.hayEspacio() > 0) {
             this.maquina();
         }
     }
@@ -74,12 +82,12 @@ public class TresenRaya {
         }
     }
     
-    public boolean hayEspacio() {
-        boolean hay = false;
+    public int hayEspacio() {
+        int hay = 0;
         for (char[] i : this.tablero) {
             for (char j : i) {
                 if (j == cv) {
-                    hay = true;
+                    hay++;
                 }
             }
         }
