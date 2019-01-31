@@ -76,22 +76,48 @@ public class TresenRaya {
             }
         }        
     }
-
+    
     public void maquina() {
+        Random rnd = new Random();
+        int x, y, a, b;
         // dificultad 0 -> posicion aleatoria
         if (this.dif == 0) {
-            Random rnd = new Random();
-            int x, y;
             do {
                 x = rnd.nextInt(3);
                 y = rnd.nextInt(3);
             } while (this.tablero[x][y] != cv);
             this.tablero[x][y] = cpu;
         }
-        // dificultad 1 -> busca tres en raya
+        // dificultad 1 -> coloca fichas contiguas
         if (this.dif == 1) {
-            
+            do {
+                if (this.getPos(1, 1) == cv) {
+                    x = 1;
+                    y = 1;
+                    break;
+                }
+                
+                x = rnd.nextInt(3);
+                y = rnd.nextInt(3);
+                a = rnd.nextInt(3)-1;
+                b = rnd.nextInt(3)-1;
+                
+                if (this.getPos(x, y) == cpu && dentro(x+a, y+b) && this.getPos(x+a, y+b) == cv) {
+                    x = x+a;
+                    y = y+b;
+                    break;
+                }
+            } while(this.getPos(x, y) != cv);
+            this.tablero[x][y] = cpu;
         }
+    }
+    /*
+    private boolean dentro(int a) {
+        return (a >= 0 && a <= 2);
+    }*/
+    
+    private boolean dentro(int a, int b) {
+        return (a >= 0 && a <= 2 && b >= 0 && b <= 2);
     }
     
     public int hayEspacio() {

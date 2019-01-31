@@ -7,13 +7,13 @@ import tresenraya.TresenRaya;
  */
 public class InterfazConsola {
     public static void dibujaTablero(TresenRaya tr) {
-        System.out.println("\n┌─┬─┬─┐");
+        System.out.println("┌─┬─┬─┐");
         System.out.println("│" + tr.getPos(0, 0) + "│" + tr.getPos(1, 0) + "│" + tr.getPos(2, 0) + "│");
         System.out.println("├─┼─┼─┤");
         System.out.println("│" + tr.getPos(0, 1) + "│" + tr.getPos(1, 1) + "│" + tr.getPos(2, 1) + "│");
         System.out.println("├─┼─┼─┤");
         System.out.println("│" + tr.getPos(0, 2) + "│" + tr.getPos(1, 2) + "│" + tr.getPos(2, 2) + "│");
-        System.out.println("└─┴─┴─┘");
+        System.out.println("└─┴─┴─┘\n");
     }
     
     public static void main(String[] args) {
@@ -22,11 +22,11 @@ public class InterfazConsola {
         int nPart = sc.nextInt();
         System.out.print("\nDificultad [0,1,2] -> ");
         int dif = sc.nextInt();
-        System.out.println("\n");
         int pJug = 0;
         int pMaq = 0;
         for (; nPart > 0; nPart--) {
             TresenRaya tr = new TresenRaya(dif);
+            System.out.println("El jugador es " + tr.getJug());
             dibujaTablero(tr);
             while (tr.hayEspacio() > 0) {
                 //  el jugador mueve
