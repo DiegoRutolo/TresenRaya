@@ -31,7 +31,7 @@ public class TresenRaya {
         }
     }
     
-    public char getPos(int x, int y) {
+    public char charAt(int x, int y) {
         return this.tablero[x][y];
     }
     
@@ -80,43 +80,83 @@ public class TresenRaya {
     public void maquina() {
         Random rnd = new Random();
         int x, y, a, b;
-        // dificultad 0 -> posicion aleatoria
-        if (this.dif == 0) {
+        // dif 0 -> posicion aleatoria
+        do {
+            x = rnd.nextInt(3);
+            y = rnd.nextInt(3);
+        } while (this.tablero[x][y] != cv);
+        
+        // dif 1 -> coloca fichas contiguas
+        if (this.dif >= 1) {
             do {
-                x = rnd.nextInt(3);
-                y = rnd.nextInt(3);
-            } while (this.tablero[x][y] != cv);
-            this.tablero[x][y] = cpu;
-        }
-        // dificultad 1 -> coloca fichas contiguas
-        if (this.dif == 1) {
-            do {
-                if (this.getPos(1, 1) == cv) {
-                    x = 1;
-                    y = 1;
-                    break;
-                }
-                
                 x = rnd.nextInt(3);
                 y = rnd.nextInt(3);
                 a = rnd.nextInt(3)-1;
                 b = rnd.nextInt(3)-1;
                 
-                if (this.getPos(x, y) == cpu && dentro(x+a, y+b) && this.getPos(x+a, y+b) == cv) {
+                if (this.charAt(x, y) == cpu && dentro(x+a, y+b) && this.charAt(x+a, y+b) == cv) {
+                    // System.out.println("dif 1");
                     x = x+a;
                     y = y+b;
                     break;
                 }
-            } while(this.getPos(x, y) != cv);
-            this.tablero[x][y] = cpu;
+            } while(this.charAt(x, y) != cv);
         }
+        
+        // dif 2 -> busca completar linea
+        if (this.dif >= 2) {
+            // busca lineas horizontales
+            iniHor:
+            for (int i = 0; i < 3; i++) {
+                if (enLinea(cpu, i, true) == 2) {
+                    for (int j = 0; j < 3; j++) {
+                        if (this.charAt(j, i) == cv) {
+                            // System.out.println("Dif 2");
+                            x = j;
+                            y = i;
+                            break iniHor;
+                        }
+                    }
+                }
+            }
+            // busca lineas verticales
+            iniVer:
+            for (int i = 0; i < 3; i++) {
+                if (enLinea(cpu, i, false) == 2) {
+                    for (int j = 0; j < 3; j++) {
+                        if (this.charAt(i, j) == cv) {
+                            x = i;
+                            y = j;
+                            break iniVer;
+                        }
+                    }
+                }
+            }
+        }
+        this.tablero[x][y] = cpu;
     }
-    /*
-    private boolean dentro(int a) {
-        return (a >= 0 && a <= 2);
-    }*/
     
-    private boolean dentro(int a, int b) {
+    int enLinea(char c, int n, boolean h) {
+        int cont = 0;
+        
+        if (h)  {
+            for (int i = 0; i < 3; i++) {
+                if (this.charAt(i, n) == c) {
+                    cont++;
+                }
+            }
+        } else {
+            for (int i = 0; i < 3; i++) {
+                if (this.charAt(n, i) == c) {
+                    cont++;
+                }
+            }
+        }
+        
+        return cont;
+    }
+        
+    boolean dentro(int a, int b) {
         return (a >= 0 && a <= 2 && b >= 0 && b <= 2);
     }
     
