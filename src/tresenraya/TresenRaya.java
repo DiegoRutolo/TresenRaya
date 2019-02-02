@@ -12,14 +12,29 @@ public class TresenRaya {
     private char jug = 'X';       // caracter del jugador
     private char cpu = 'O';       // caracter de la maquina
     
+    /**
+     * Inicializa el juego con dificultad 0 y espacio en blanco como
+     * caracter vacío.
+    */
     public TresenRaya() {
         this(0, ' ');
     }
+    
+    /**
+     * Este constructor inicializa el juego con espacio en blanco como 
+     * caracter vacío
+     * 
+     * @param dif   dificultad del juego
+     */
     
     public TresenRaya(int dif) {
         this(dif, ' ');
     }
     
+    /**
+     * @param dif   dificultad del juego
+     * @param cv    caracter que representa casilla vacía
+     */
     public TresenRaya(int dif, char cv) {
         this.dif = dif;
         this.cv = cv;
@@ -31,29 +46,53 @@ public class TresenRaya {
         }
     }
     
+    /**
+     * Devuelve el caracter en la posición (x, y)
+     * 
+     * @param x     coordenada x
+     * @param y     coordenada y
+     * @return      el caracter en (x, y)
+     */
     public char charAt(int x, int y) {
         return this.tablero[x][y];
     }
     
+    /**
+     * 
+     * @return      caracter que representa la ficha del jugador
+     */
     public char getJug() {
         return this.jug;
     }
 
+    /**
+     * 
+     * @param jug   caracter que representa la ficha del jugador
+     */
     public void setJug(char jug) {
         this.jug = jug;
     }
 
+    /**
+     * 
+     * @return      caracter que representa la ficha de la máquina
+     */
     public char getCpu() {
         return this.cpu;
     }
 
+    /**
+     * 
+     * @param cpu   caracter que representa la ficha de la máquina
+     */
     public void setCpu(char cpu) {
         this.cpu = cpu;
     }
     
-    /*
-     *  Innecesario
-    */
+    /**
+     * Imprime por salida estándar la matriz del tablero, sin decoraciones
+     * pero en orden
+     */
     public void imprimeTablero() {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
@@ -64,6 +103,12 @@ public class TresenRaya {
         System.out.print("\n");
     }
     
+    /**
+     * El jugador coloca ficha en (x, y)
+     * 
+     * @param x     coordenada horizontal
+     * @param y     coordenada vertical
+     */
     public void jugador(int x, int y) {
         if (x < 0 || x >= 3 || y < 0 || y >= 3) {
             return;
@@ -71,12 +116,15 @@ public class TresenRaya {
         
         if (tablero[x][y] == cv) {
             tablero[x][y] = jug;
-            if (this.hayEspacio() > 0) {
+            if (this.espaciosLibres() > 0) {
                 this.maquina();
             }
         }        
     }
     
+    /**
+     * Movimiento de la máquina
+     */
     public void maquina() {
         Random rnd = new Random();
         int x, y, a, b;
@@ -136,6 +184,17 @@ public class TresenRaya {
         this.tablero[x][y] = cpu;
     }
     
+    /**
+     * Cuenta el número de caracteres c que hay en línea, horizontal o
+     * vertical, en la linea o columna n.
+     * 
+     * @param c     caracter para comprovar
+     * @param n     línea o columna a comprobar, dependiendo del valor de h
+     * @param h     si verdadero, busca lineas horizontales y por lo tanto, 
+     *              n se refiere a filas; si falso, busca lineas verticales
+     * @return      un número entre 0 y 3, que indica cuantos caracters c
+     *              hay alineados
+     */
     int enLinea(char c, int n, boolean h) {
         int cont = 0;
         
@@ -155,12 +214,23 @@ public class TresenRaya {
         
         return cont;
     }
-        
-    boolean dentro(int a, int b) {
-        return (a >= 0 && a <= 2 && b >= 0 && b <= 2);
+    
+    /**
+     * Indica si las coordenadas (x, y) están dentro del tablero
+     * 
+     * @param x posicion horizontal
+     * @param y posicion vertical
+     * @return  verdadero si (x, y) está dentro del tablero, falso si no
+     */
+    boolean dentro(int x, int y) {
+        return (x >= 0 && x <= 2 && y >= 0 && y <= 2);
     }
     
-    public int hayEspacio() {
+    /**
+     * @return  entero en el rango [0, 9] que indica el número de espacios
+     *          que quedan en el tablero
+     */
+    public int espaciosLibres() {
         int nEspacios = 0;
         for (char[] i : this.tablero) {
             for (char j : i) {
@@ -172,6 +242,13 @@ public class TresenRaya {
         return nEspacios;
     }
     
+    /**
+     * Indica si el algún punto del tablero hay un tres en raya con el
+     * caracter c
+     * 
+     * @param c     caracter a buscar
+     * @return      verdadero si hay 3 en raya
+     */
     public boolean linea(char c) {
         boolean linea = false;
         for (int y = 0; y < 3; y++) {

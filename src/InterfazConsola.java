@@ -28,7 +28,7 @@ public class InterfazConsola {
             TresenRaya tr = new TresenRaya(dif);
             System.out.println("El jugador es " + tr.getJug());
             dibujaTablero(tr);
-            while (tr.hayEspacio() > 0) {
+            while (tr.espaciosLibres() > 0) {
                 //  el jugador mueve
                 //      la máquina va automáticamente despues
                 tr.jugador(sc.nextInt(), sc.nextInt());
@@ -52,9 +52,9 @@ public class InterfazConsola {
         if (pJug == pMaq) {
             System.out.println("EMPATE");
         } else if (pJug > pMaq) {
-            System.out.println("GANA EL JUGADOR");
+            System.out.println("GANA EL JUGADOR CON " + pJug + " puntos");
         } else {
-            System.out.println("GANA LA MAQUINA");
+            System.out.println("GANA LA MAQUINA CON " + pMaq + " puntos");
         }
     }
 }
