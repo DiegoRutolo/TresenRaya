@@ -17,7 +17,7 @@ public class TresenRaya {
      * caracter vacío.
     */
     public TresenRaya() {
-        this(0, ' ');
+        this(3, ' ');
     }
     
     /**
@@ -32,6 +32,8 @@ public class TresenRaya {
     }
     
     /**
+     * Inicializa el juego con dificultad <code>dif</code> y usando <code>cv</code> como casilla vacia
+     * 
      * @param dif   dificultad del juego
      * @param cv    caracter que representa casilla vacía
      */
@@ -47,7 +49,7 @@ public class TresenRaya {
     }
     
     /**
-     * Devuelve el caracter en la posición (x, y)
+     * Devuelve el caracter en la posición (<code>x</code>, <code>y</code>)
      * 
      * @param x     coordenada x
      * @param y     coordenada y
@@ -58,6 +60,7 @@ public class TresenRaya {
     }
     
     /**
+     * Devuelve el caracter que representa al jugador
      * 
      * @return      caracter que representa la ficha del jugador
      */
@@ -66,6 +69,7 @@ public class TresenRaya {
     }
 
     /**
+     * Establece el caracter que representa al jugador
      * 
      * @param jug   caracter que representa la ficha del jugador
      */
@@ -74,6 +78,7 @@ public class TresenRaya {
     }
 
     /**
+     * Devuelve el caracter que representa la ficha de la máquina
      * 
      * @return      caracter que representa la ficha de la máquina
      */
@@ -82,6 +87,7 @@ public class TresenRaya {
     }
 
     /**
+     * Establece el caracter que representa la ficha de la máquina
      * 
      * @param cpu   caracter que representa la ficha de la máquina
      */
@@ -104,7 +110,7 @@ public class TresenRaya {
     }
     
     /**
-     * El jugador coloca ficha en (x, y)
+     * El jugador coloca ficha en (<code>x</code>, <code>y</code>)
      * 
      * @param x     coordenada horizontal
      * @param y     coordenada vertical
@@ -180,22 +186,95 @@ public class TresenRaya {
                     }
                 }
             }
+            // busca lineas diagonales
+            iniDiag:
+            if (this.charAt(1, 1) == cpu) {
+                if (this.charAt(0, 0) == cpu && this.charAt(2, 2) == cv) {
+                    x = 2;
+                    y = 2;
+                } else if (this.charAt(2, 2) == cpu && this.charAt(0, 0) == cv) {
+                    x = 0;
+                    y = 0;
+                } else if (this.charAt(2, 0) == cpu && this.charAt(0, 2) == cv) {
+                    x = 0;
+                    y = 2;
+                } else if (this.charAt(0, 2) == cpu && this.charAt(2, 0) == cv) {
+                    x = 2;
+                    y = 0;
+                }
+            }
+        }
+        
+        // dif 3 -> intenta bloquear al jugador
+        if (this.dif >= 3){
+             // busca lineas horizontales
+            iniHor:
+            for (int i = 0; i < 3; i++) {
+                if (enLinea(jug, i, true) == 2) {
+                    for (int j = 0; j < 3; j++) {
+                        if (this.charAt(j, i) == cv) {
+                            // System.out.println("Dif 2");
+                            x = j;
+                            y = i;
+                            break iniHor;
+                        }
+                    }
+                }
+            }
+            // busca lineas verticales
+            iniVer:
+            for (int i = 0; i < 3; i++) {
+                if (enLinea(jug, i, false) == 2) {
+                    for (int j = 0; j < 3; j++) {
+                        if (this.charAt(i, j) == cv) {
+                            x = i;
+                            y = j;
+                            break iniVer;
+                        }
+                    }
+                }
+            }
+            // busca lineas diagonales
+            iniDiag:
+            if (this.charAt(1, 1) == jug) {
+                if (this.charAt(0, 0) == jug && this.charAt(2, 2) == cv) {
+                    x = 2;
+                    y = 2;
+                } else if (this.charAt(2, 2) == jug && this.charAt(0, 0) == cv) {
+                    x = 0;
+                    y = 0;
+                } else if (this.charAt(2, 0) == jug && this.charAt(0, 2) == cv) {
+                    x = 0;
+                    y = 2;
+                } else if (this.charAt(0, 2) == jug && this.charAt(2, 0) == cv) {
+                    x = 2;
+                    y = 0;
+                }
+            }
+        }
+        
+        // intenta poner ficha en el centro
+        if (this.charAt(1, 1) == cv) {
+            x = 1;
+            y = 1;
         }
         this.tablero[x][y] = cpu;
     }
     
     /**
-     * Cuenta el número de caracteres c que hay en línea, horizontal o
-     * vertical, en la linea o columna n.
+     * Cuenta el número de caracteres <code>c</code> que hay alineados
+     * en la linea o columna <code>n</code>.
      * 
      * @param c     caracter para comprovar
-     * @param n     línea o columna a comprobar, dependiendo del valor de h
+     * @param n     línea o columna a comprobar, dependiendo del valor
+     *              de <code>h</code>
      * @param h     si verdadero, busca lineas horizontales y por lo tanto, 
-     *              n se refiere a filas; si falso, busca lineas verticales
-     * @return      un número entre 0 y 3, que indica cuantos caracters c
-     *              hay alineados
+     *              <code>n</code> se refiere a filas; si falso, busca
+     *              lineas verticales
+     * @return      un número entre 0 y 3, que indica cuantos caracters
+     *              <code>c</code> hay alineados
      */
-    int enLinea(char c, int n, boolean h) {
+    public int enLinea(char c, int n, boolean h) {
         int cont = 0;
         
         if (h)  {
@@ -222,13 +301,14 @@ public class TresenRaya {
      * @param y posicion vertical
      * @return  verdadero si (x, y) está dentro del tablero, falso si no
      */
-    boolean dentro(int x, int y) {
+    public boolean dentro(int x, int y) {
         return (x >= 0 && x <= 2 && y >= 0 && y <= 2);
     }
     
     /**
-     * @return  entero en el rango [0, 9] que indica el número de espacios
-     *          que quedan en el tablero
+     * Devuelve el número de espacios libres que quedan en el tablero
+     * 
+     * @return  entero en el rango [0, 9]
      */
     public int espaciosLibres() {
         int nEspacios = 0;
@@ -244,7 +324,7 @@ public class TresenRaya {
     
     /**
      * Indica si el algún punto del tablero hay un tres en raya con el
-     * caracter c
+     * caracter <code>c</code>
      * 
      * @param c     caracter a buscar
      * @return      verdadero si hay 3 en raya

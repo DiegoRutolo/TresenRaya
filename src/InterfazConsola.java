@@ -6,6 +6,10 @@ import tresenraya.TresenRaya;
  * @author a16diegoar
  */
 public class InterfazConsola {
+    /**
+     * Dibuja un tablero con lineas
+     * @param tr    tablero a dibujar
+     */
     public static void dibujaTablero(TresenRaya tr) {
         System.out.println("┌─┬─┬─┐");
         System.out.println("│" + tr.charAt(0, 0) + "│" + tr.charAt(1, 0) + "│" + tr.charAt(2, 0) + "│");
@@ -18,7 +22,7 @@ public class InterfazConsola {
     
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("\nDificultad [0,1,2] -> ");
+        System.out.print("\nDificultad [0-3] -> ");
         int dif = sc.nextInt();
         System.out.print("Numero de partidas -> ");
         int nPart = sc.nextInt();
